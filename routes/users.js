@@ -34,4 +34,27 @@ router.get("/:username", authRequired, async function(req, res, next) {
   }
 });
 
+/** POST / {userdata}  => {token: token} */
+
+router.post("/", async function(req, res, next) {
+  try {
+    delete req.body._token;
+    const validation = validate(req.body, userNewSchema);
+
+    if (!validation.valid) {
+      return next({
+        status: 400,
+        message: validation.errors.map(e => e.stack)
+      });
+    }
+
+    const newUser = await User.register(req.body);
+    const token = createToken(newUser);
+    return res.status(201).json({ token });
+  } catch (e) {
+    return next(e);
+  }
+});
+
+
 module.exports = router;
