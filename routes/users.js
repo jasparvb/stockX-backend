@@ -56,5 +56,32 @@ router.post("/", async function(req, res, next) {
   }
 });
 
+/** PATCH /[handle] {userData} => {user: updatedUser} */
+
+router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
+  try {
+    if ("username" in req.body) {
+      return next({ status: 400, message: "Not allowed" });
+    }
+    await User.authenticate({
+      username: req.params.username,
+      password: req.body.password
+    });
+    delete req.body.password;
+    const validation = validate(req.body, userUpdateSchema);
+    if (!validation.valid) {
+      return next({
+        status: 400,
+        message: validation.errors.map(e => e.stack)
+      });
+    }
+
+    const user = await User.update(req.params.username, req.body);
+    return res.json({ user });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 
 module.exports = router;
