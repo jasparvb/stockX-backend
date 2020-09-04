@@ -132,7 +132,7 @@ class User {
     const user = result.rows[0];
 
     if (!user) {
-      let notFound = new Error(`There exists no user '${username}`);
+      let notFound = new Error(`There exists no user '${username}'`);
       notFound.status = 404;
       throw notFound;
     }
