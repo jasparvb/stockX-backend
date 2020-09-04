@@ -1,19 +1,19 @@
-/** Routes for stocks. */
+/** Routes for lists. */
 
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 
 const { authRequired } = require("../middleware/auth");
 
-const Stock = require("../models/stock");
+const list = require("../models/list");
 
 
-/** GET / => {stocks: [stock, ...]} */
+/** GET / => {lists: [list, ...]} */
 
 router.get("/", authRequired, async function(req, res, next) {
   try {
-    const stocks = await Stock.findAll(req.query, req.username);
-    return res.json({stocks});
+    const lists = await List.findAll(req.query, req.username);
+    return res.json({lists});
   }
 
   catch (err) {
@@ -21,12 +21,12 @@ router.get("/", authRequired, async function(req, res, next) {
   }
 });
 
-/** GET /[stockid] => {stock: stock} */
+/** GET /[listid] => {list: list} */
 
 router.get("/:id", authRequired, async function(req, res, next) {
   try {
-    const stock = await Stock.findOne(req.params.id);
-    return res.json({stock});
+    const list = await List.findOne(req.params.id);
+    return res.json({list});
   }
 
   catch (err) {
@@ -34,12 +34,12 @@ router.get("/:id", authRequired, async function(req, res, next) {
   }
 });
 
-/** POST / {stockData} => {stock: stock} */
+/** POST / {listData} => {list: list} */
 
 router.post("/", authRequired, async function(req, res, next) {
   try {
-    const stock = await Stock.create(req.body);
-    return res.status(201).json({stock});
+    const list = await List.create(req.body);
+    return res.status(201).json({list});
   }
 
   catch (err) {
@@ -47,12 +47,12 @@ router.post("/", authRequired, async function(req, res, next) {
   }
 });
 
-/** DELETE /[id]  =>  {message: "Stock deleted"}  */
+/** DELETE /[id]  =>  {message: "List deleted"}  */
 
 router.delete("/:id", authRequired, async function(req, res, next) {
   try {
-    await Stock.remove(req.params.id);
-    return res.json({ message: "Stock deleted" });
+    await List.remove(req.params.id);
+    return res.json({ message: "List deleted" });
   }
 
   catch (err) {
