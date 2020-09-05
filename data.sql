@@ -11,6 +11,7 @@ CREATE TABLE "users" (
     "id" serial   NOT NULL,
     "username" text   NOT NULL,
     "password" text   NOT NULL,
+    "email" text   NOT NULL,
     CONSTRAINT "pk_users" PRIMARY KEY (
         "id"
      ),
