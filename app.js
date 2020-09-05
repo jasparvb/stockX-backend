@@ -14,9 +14,15 @@ app.use(morgan("tiny"));
 
 
 const usersRoutes = require("./routes/users");
+const listsRoutes = require("./routes/lists");
+const stocksRoutes = require("./routes/stocks");
+const apiRoutes = require("./routes/api");
 const authRoutes = require("./routes/auth");
 
 app.use("/users", usersRoutes);
+app.use("/lists", listsRoutes);
+app.use("/stocks", stocksRoutes);
+app.use("/api", apiRoutes);
 app.use("/", authRoutes);
 
 /** 404 handler */
