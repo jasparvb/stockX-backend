@@ -7,7 +7,14 @@ const TIINGO_URL = "https://api.tiingo.com/tiingo";
 
 class IexCloudApi {
   static async search(term) {
-    const result = await axios.get(`${TIINGO_URL}/utilities/search/${term}`, {
+    const result = await axios.get(`${TIINGO_URL}/utilities/search`, {
+      params: {token: TIINGO_KEY, limit: 5, query: term}
+    });
+    return result.data;
+  }
+
+  static async stockDetails(ticker) {
+    const result = await axios.get(`${TIINGO_URL}/daily/${ticker}`, {
       params: {token: TIINGO_KEY}
     });
     return result.data;
