@@ -13,11 +13,31 @@ class IexCloudApi {
     return result.data;
   }
 
-  static async stockDetails(ticker) {
-    const result = await axios.get(`${TIINGO_URL}/daily/${ticker}`, {
+  static async getStockDescription(ticker) {
+    const res = await axios.get(`${TIINGO_URL}/daily/${ticker}`, {
       params: {token: TIINGO_KEY}
     });
-    return result.data;
+    return res.data;
+  }
+
+  static async getStockNews(ticker) {
+    const res = await axios.get(`${IEX_URL}/stock/${ticker}/news/last/3`, {
+      params: {token: IEX_KEY}
+    });
+    return res.data;
+  }
+
+  static async stockDetails(ticker) {
+    let requests = [];
+    requests.push(this.getStockDescription(ticker));
+    requests.push(this.getStockNews(ticker));
+    const stock = await Promise.all(requests);
+    return {
+      ticker: stock[0].ticker,
+      name: stock[0].name,
+      description: stock[0].description,
+      articles: stock[1]
+    };
   }
 }
 
