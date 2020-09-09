@@ -49,7 +49,7 @@ class IexCloudApi {
         filter: "minute,label,open"
       }
     });
-    return res.data.chart;
+    return res.data;
   }
 }
 
