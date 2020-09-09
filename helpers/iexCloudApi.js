@@ -26,7 +26,7 @@ class IexCloudApi {
     });
     return res.data;
   }
-
+  
   static async stockDetails(ticker) {
     let requests = [];
     requests.push(this.getStockDescription(ticker));
@@ -38,6 +38,18 @@ class IexCloudApi {
       description: stock[0].description,
       articles: stock[1]
     };
+  }
+
+  static async stockQuote(ticker, range) {
+    const res = await axios.get(`${IEX_URL}/stock/${ticker}/batch`, {
+      params: {
+        token: IEX_KEY,
+        types: "chart",
+        range: range,
+        filter: "minute,label,open"
+      }
+    });
+    return res.data.chart;
   }
 }
 

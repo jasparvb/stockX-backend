@@ -32,4 +32,17 @@ router.get("/stock/:ticker", async function(req, res, next) {
   }
 });
 
+/** GET / => {quote: [{"minute"...}, ...]} */
+
+router.get("/quote/:ticker", async function(req, res, next) {
+  try {
+    const quote = await IexCloudApi.stockQuote(req.params.ticker, req.query.range);
+    return res.json({quote});
+  }
+
+  catch (err) {
+    return next(err);
+  }
+});
+
 module.exports = router;
