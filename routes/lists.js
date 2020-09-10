@@ -5,7 +5,7 @@ const router = express.Router({ mergeParams: true });
 
 const { authRequired } = require("../middleware/auth");
 
-const list = require("../models/list");
+const List = require("../models/list");
 
 
 /** GET / => {lists: [list, ...]} */
@@ -38,7 +38,8 @@ router.get("/:id", authRequired, async function(req, res, next) {
 
 router.post("/", authRequired, async function(req, res, next) {
   try {
-    const list = await List.create(req.body);
+    const list = await List.create(req.body, req.username);
+    debugger;
     return res.status(201).json({list});
   }
 

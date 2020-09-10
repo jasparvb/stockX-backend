@@ -12,6 +12,15 @@
       "maxLength": 55,
       "examples": ["foo123"]
     },
+    "email": {
+      "$id": "/properties/email",
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 60,
+      "title": "The Email Schema ",
+      "default": "",
+      "examples": ["michael@rithmschool.com"]
+    },
     "_token": {
       "$id": "/properties/token",
       "type": "string",

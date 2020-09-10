@@ -6,9 +6,23 @@ const sqlForPartialUpdate = require("../helpers/partialUpdate");
 
 class List {
 
+  /** Return all lists with stocks from a user */
+
+  static async findAll(username) {
+
+    const userLists = await db.query(
+      `SELECT s.id, s.ticker, s.name, l.name 
+         FROM lists AS l
+           JOIN stocks AS s ON s.list_id = l.id
+         WHERE l.username = $1`,
+      [username]);
+
+    return userLists.rows;
+  }
+
   /** Create a list (from data), update db, return new list data. */
 
-  static async create(data) {
+  static async create(data, username) {
 
     const result = await db.query(
         `INSERT INTO lists 
@@ -16,8 +30,8 @@ class List {
             VALUES ($1, $2) 
             RETURNING id, name, username`,
         [
-          data.name,
-          data.username
+          data.title,
+          username
         ]);
 
     return result.rows[0];

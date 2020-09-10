@@ -46,7 +46,7 @@ class IexCloudApi {
         token: IEX_KEY,
         types: "chart",
         range: range,
-        filter: "minute,label,open"
+        filter: "label,open"
       }
     });
     return res.data;

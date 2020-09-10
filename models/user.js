@@ -59,7 +59,7 @@ class User {
         `INSERT INTO users 
             (username, password, email) 
           VALUES ($1, $2, $3) 
-          RETURNING username, password, email`,
+          RETURNING username, email`,
         [
           data.username,
           hashedPassword,
@@ -98,7 +98,7 @@ class User {
     }
 
     const userListsRes = await db.query(
-        `SELECT s.id, s.ticker, l.name 
+        `SELECT s.id, s.ticker, s.name, l.name 
            FROM lists AS l
              JOIN stocks AS s ON s.list_id = l.id
            WHERE l.username = $1`,

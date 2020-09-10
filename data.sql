@@ -11,7 +11,7 @@ CREATE TABLE "users" (
     "id" serial   NOT NULL,
     "username" text   NOT NULL,
     "password" text   NOT NULL,
-    "email" text   NOT NULL,
+    "email" text NOT NULL,
     CONSTRAINT "pk_users" PRIMARY KEY (
         "id"
      ),
@@ -23,6 +23,7 @@ CREATE TABLE "users" (
 CREATE TABLE "stocks" (
     "id" serial   NOT NULL,
     "ticker" text   NOT NULL,
+    "name" text   NOT NULL,
     "list_id" int   NOT NULL,
     CONSTRAINT "pk_stocks" PRIMARY KEY (
         "id"
