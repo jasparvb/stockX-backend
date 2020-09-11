@@ -12,7 +12,7 @@ const List = require("../models/list");
 
 router.get("/", authRequired, async function(req, res, next) {
   try {
-    const lists = await List.findAll(req.query, req.username);
+    const lists = await List.findAll(req.username);
     return res.json({lists});
   }
 

@@ -12,11 +12,12 @@ class Stock {
 
     const result = await db.query(
         `INSERT INTO stocks 
-              (ticker, list_id)
-            VALUES ($1, $2) 
-            RETURNING id, ticker, list_id`,
+              (ticker, name, list_id)
+            VALUES ($1, $2, $3) 
+            RETURNING id, ticker, name, list_id`,
         [
           data.ticker,
+          data.name,
           data.list_id
         ]);
 

@@ -11,15 +11,29 @@ class List {
   static async findAll(username) {
 
     const userLists = await db.query(
-      `SELECT s.id, s.ticker, s.name, l.name 
-         FROM lists AS l
-           JOIN stocks AS s ON s.list_id = l.id
-         WHERE l.username = $1`,
+      `SELECT id, name
+         FROM lists
+         WHERE username = $1`,
       [username]);
 
-    return userLists.rows;
-  }
+      const listStocks = await db.query(
+        `SELECT s.id, s.ticker, s.name, s.list_id 
+        FROM lists AS l
+        JOIN stocks AS s ON s.list_id = l.id
+        WHERE l.username = $1`,
+        [username]);
+      
+      const lists = userLists.rows.map(l => {
+        return {
+          id: l.id,
+          name: l.name,
+          stocks: listStocks.rows.filter(s => l.id === s.list_id)
+        }
+      });
 
+      return lists;
+  }
+      
   /** Create a list (from data), update db, return new list data. */
 
   static async create(data, username) {

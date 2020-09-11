@@ -69,17 +69,6 @@ class User {
     return result.rows[0];
   }
 
-  /** Find all users. */
-
-  static async findAll() {
-    const result = await db.query(
-        `SELECT username
-          FROM users
-          ORDER BY username`);
-
-    return result.rows;
-  }
-
   /** Given a username, return data about user. */
 
   static async findOne(username) {
@@ -97,14 +86,6 @@ class User {
       throw error;
     }
 
-    const userListsRes = await db.query(
-        `SELECT s.id, s.ticker, s.name, l.name 
-           FROM lists AS l
-             JOIN stocks AS s ON s.list_id = l.id
-           WHERE l.username = $1`,
-        [username]);
-
-    user.lists = userListsRes.rows;
     return user;
   }
 
