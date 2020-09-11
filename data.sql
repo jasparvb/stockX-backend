@@ -31,7 +31,7 @@ CREATE TABLE "stocks" (
 );
 
 ALTER TABLE "lists" ADD CONSTRAINT "fk_lists_username" FOREIGN KEY("username")
-REFERENCES "users" ("username");
+REFERENCES "users" ("username") ON DELETE CASCADE;
 
 ALTER TABLE "stocks" ADD CONSTRAINT "fk_stocks_list_id" FOREIGN KEY("list_id")
-REFERENCES "lists" ("id");
+REFERENCES "lists" ("id") ON DELETE CASCADE;
