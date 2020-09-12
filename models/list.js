@@ -42,7 +42,7 @@ class List {
         `INSERT INTO lists 
               (name, username)
             VALUES ($1, $2) 
-            RETURNING id, name, username`,
+            RETURNING id, name`,
         [
           data.title,
           username

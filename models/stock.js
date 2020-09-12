@@ -18,7 +18,7 @@ class Stock {
         [
           data.ticker,
           data.name,
-          data.list_id
+          data.listId
         ]);
 
     return result.rows[0];

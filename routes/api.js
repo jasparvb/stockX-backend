@@ -3,14 +3,14 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 
-const IexCloudApi = require("../helpers/iexCloudApi");
+const StockXApi = require("../helpers/stockXApi");
 
 
 /** GET / => {stocks: [{"symbol"...}, ...]} */
 
 router.get("/search/:query", async function(req, res, next) {
   try {
-    const stocks = await IexCloudApi.search(req.params.query);
+    const stocks = await StockXApi.search(req.params.query);
     return res.json({stocks});
   }
 
@@ -23,7 +23,7 @@ router.get("/search/:query", async function(req, res, next) {
 
 router.get("/stock/:ticker", async function(req, res, next) {
   try {
-    const stock = await IexCloudApi.stockDetails(req.params.ticker);
+    const stock = await StockXApi.stockDetails(req.params.ticker);
     return res.json({stock});
   }
 
@@ -36,7 +36,7 @@ router.get("/stock/:ticker", async function(req, res, next) {
 
 router.get("/quote/:ticker/:range", async function(req, res, next) {
   try {
-    const quote = await IexCloudApi.stockQuote(req.params.ticker, req.params.range);
+    const quote = await StockXApi.stockQuote(req.params.ticker, req.params.range);
     return res.json({quote});
   }
 

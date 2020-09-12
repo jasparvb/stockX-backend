@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 
 const { authRequired } = require("../middleware/auth");
+const StockXApi = require("../helpers/stockXApi");
 
 const List = require("../models/list");
 
@@ -12,7 +13,8 @@ const List = require("../models/list");
 
 router.get("/", authRequired, async function(req, res, next) {
   try {
-    const lists = await List.findAll(req.username);
+    let listsRes = await List.findAll(req.username);
+    const lists = await StockXApi.getListPrices(listsRes);
     return res.json({lists});
   }
 
