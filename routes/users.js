@@ -50,7 +50,7 @@ router.post("/", async function(req, res, next) {
 
     const newUser = await User.register(req.body);
     const token = createToken(newUser);
-    return res.status(201).json({ token });
+    return res.status(201).json({ token, username: newUser.username, email: newUser.email });
   } catch (e) {
     return next(e);
   }
@@ -63,11 +63,6 @@ router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
     if ("username" in req.body) {
       return next({ status: 400, message: "Not allowed" });
     }
-    await User.authenticate({
-      username: req.params.username,
-      password: req.body.password
-    });
-    delete req.body.password;
     const validation = validate(req.body, userUpdateSchema);
     if (!validation.valid) {
       return next({
@@ -88,7 +83,7 @@ router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
 router.delete("/:username", ensureCorrectUser, async function(req, res, next) {
   try {
     await User.remove(req.params.username);
-    return res.json({ message: "User deleted" });
+    return res.json({ message: "User account deleted!" });
   } catch (err) {
     return next(err);
   }

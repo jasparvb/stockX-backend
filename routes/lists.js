@@ -14,8 +14,29 @@ const List = require("../models/list");
 router.get("/", authRequired, async function(req, res, next) {
   try {
     let listsRes = await List.findAll(req.username);
-    const lists = await StockXApi.getListPrices(listsRes);
-    return res.json({lists});
+    if(listsRes) {
+      let tickerSet = new Set();
+      for(let list of listsRes) {
+        for(let stock of list.stocks) {
+          tickerSet.add(stock.ticker);
+        }
+      }
+      if(tickerSet.size) {
+        let symbols = '';
+        for(let i of tickerSet) {
+          if(symbols) {
+            symbols = symbols + "," + i;
+          } else {
+            symbols = i;
+          }
+        }    
+        const lists = await StockXApi.getListPrices(listsRes, symbols);
+        return res.json({lists});
+      }
+    } else {
+      return res.json({lists: []});
+    }
+    return res.json({lists: listsRes});
   }
 
   catch (err) {
@@ -41,7 +62,6 @@ router.get("/:id", authRequired, async function(req, res, next) {
 router.post("/", authRequired, async function(req, res, next) {
   try {
     const list = await List.create(req.body, req.username);
-    debugger;
     return res.status(201).json({list});
   }
 

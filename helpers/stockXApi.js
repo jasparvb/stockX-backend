@@ -49,21 +49,7 @@ class StockXApi {
     };
   }
 
-  static async getListPrices(lists) {
-    let tickerSet = new Set();
-    let symbols = '';
-    for(let list of lists) {
-      for(let stock of list.stocks) {
-        tickerSet.add(stock.ticker);
-      }
-    }
-    for(let i of tickerSet) {
-      if(symbols) {
-        symbols = symbols + "," + i;
-      } else {
-        symbols = i;
-      }
-    }
+  static async getListPrices(lists, symbols) {
     const res = await axios.get(`${IEX_URL}/stock/market/batch`, {
       params: {
         token: IEX_KEY,

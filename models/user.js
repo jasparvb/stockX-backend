@@ -15,6 +15,7 @@ class User {
     // try to find the user first
     const result = await db.query(
         `SELECT username, 
+                email,
                 password 
           FROM users 
           WHERE username = $1`,

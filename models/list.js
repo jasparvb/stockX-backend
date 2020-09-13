@@ -15,21 +15,24 @@ class List {
          FROM lists
          WHERE username = $1`,
       [username]);
+    if(!userLists.rows[0]) {
+      return;
+    }
 
-      const listStocks = await db.query(
-        `SELECT s.id, s.ticker, s.name, s.list_id 
-        FROM lists AS l
-        JOIN stocks AS s ON s.list_id = l.id
-        WHERE l.username = $1`,
-        [username]);
-      
-      const lists = userLists.rows.map(l => {
-        return {
-          id: l.id,
-          name: l.name,
-          stocks: listStocks.rows.filter(s => l.id === s.list_id)
-        }
-      });
+    const listStocks = await db.query(
+      `SELECT s.id, s.ticker, s.name, s.list_id 
+      FROM lists AS l
+      JOIN stocks AS s ON s.list_id = l.id
+      WHERE l.username = $1`,
+      [username]);
+    
+    const lists = userLists.rows.map(l => {
+      return {
+        id: l.id,
+        name: l.name,
+        stocks: listStocks.rows.filter(s => l.id === s.list_id)
+      }
+    });
 
       return lists;
   }
