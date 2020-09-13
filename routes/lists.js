@@ -2,6 +2,8 @@
 
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+const { listNewSchema } = require("../schemas");
+const { validate } = require("jsonschema");
 
 const { authRequired } = require("../middleware/auth");
 const StockXApi = require("../helpers/stockXApi");
@@ -49,6 +51,15 @@ router.get("/:id", authRequired, async function(req, res, next) {
 
 router.post("/", authRequired, async function(req, res, next) {
   try {
+    const validation = validate(req.body, listNewSchema);
+
+    if (!validation.valid) {
+      return next({
+        status: 400,
+        message: validation.errors.map(e => e.stack)
+      });
+    }
+
     const list = await List.create(req.body, req.username);
     return res.status(201).json({list});
   }

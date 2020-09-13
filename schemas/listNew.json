@@ -3,14 +3,17 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "email": {
-      "$id": "/properties/email",
+    "title": {
+      "$id": "/properties/title",
       "type": "string",
-      "minLength": 6,
-      "maxLength": 60,
-      "title": "The Email Schema ",
+      "title": "The Title Schema ",
       "default": "",
-      "examples": ["michael@rithmschool.com"]
+      "minLength": 1,
+      "maxLength": 255,
+      "examples": ["hueter"],
+      "message": {
+        "required": "Title cannot be blank"
+    }
     },
     "_token": {
       "$id": "/properties/token",
@@ -22,5 +25,5 @@
       ]
     }
   },
-  "required": ["email"]
+  "required": ["title"]
 }
