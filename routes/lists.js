@@ -5,6 +5,7 @@ const router = express.Router({ mergeParams: true });
 
 const { authRequired } = require("../middleware/auth");
 const StockXApi = require("../helpers/stockXApi");
+const { getSymbols } = require("../helpers/getSymbols");
 
 const List = require("../models/list");
 
@@ -15,24 +16,11 @@ router.get("/", authRequired, async function(req, res, next) {
   try {
     let listsRes = await List.findAll(req.username);
     if(listsRes) {
-      let tickerSet = new Set();
-      for(let list of listsRes) {
-        for(let stock of list.stocks) {
-          tickerSet.add(stock.ticker);
-        }
-      }
-      if(tickerSet.size) {
-        let symbols = '';
-        for(let i of tickerSet) {
-          if(symbols) {
-            symbols = symbols + "," + i;
-          } else {
-            symbols = i;
-          }
-        }    
+      let symbols = getSymbols(listsRes);
+      if(symbols) {
         const lists = await StockXApi.getListPrices(listsRes, symbols);
         return res.json({lists});
-      }
+      } 
     } else {
       return res.json({lists: []});
     }
