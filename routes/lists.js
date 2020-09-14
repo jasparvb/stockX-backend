@@ -34,18 +34,6 @@ router.get("/", authRequired, async function(req, res, next) {
   }
 });
 
-/** GET /[listid] => {list: list} */
-
-router.get("/:id", authRequired, async function(req, res, next) {
-  try {
-    const list = await List.findOne(req.params.id);
-    return res.json({list});
-  }
-
-  catch (err) {
-    return next(err);
-  }
-});
 
 /** POST / {listData} => {list: list} */
 

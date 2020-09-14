@@ -54,35 +54,6 @@ class List {
     return result.rows[0];
   }
 
-  /** Update list data with `data`.
-   *
-   * This is a "partial update" --- it's fine if data doesn't contain
-   * all the fields; this only changes provided ones.
-   *
-   * Return data for changed list.
-   *
-   */
-
-  static async update(id, data) {
-    let {query, values} = sqlForPartialUpdate(
-        "lists",
-        data,
-        "id",
-        id
-    );
-
-    const result = await db.query(query, values);
-    const list = result.rows[0];
-
-    if (!list) {
-      let notFound = new Error(`There is not list with id '${id}`);
-      notFound.status = 404;
-      throw notFound;
-    }
-
-    return list;
-  }
-
   /** Delete given list from database; returns undefined. */
 
   static async remove(id) {
