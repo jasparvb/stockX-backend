@@ -24,34 +24,6 @@ class Stock {
     return result.rows[0];
   }
 
-  /** Update stock data with `data`.
-   *
-   * This is a "partial update" --- it's fine if data doesn't contain
-   * all the fields; this only changes provided ones.
-   *
-   * Return data for changed stock.
-   *
-   */
-
-  static async update(id, data) {
-    let {query, values} = sqlForPartialUpdate(
-        "stocks",
-        data,
-        "id",
-        id
-    );
-
-    const result = await db.query(query, values);
-    const stock = result.rows[0];
-
-    if (!stock) {
-      let notFound = new Error(`There is no stock with id '${id}`);
-      notFound.status = 404;
-      throw notFound;
-    }
-
-    return stock;
-  }
 
   /** Delete given stock from database; returns undefined. */
 
