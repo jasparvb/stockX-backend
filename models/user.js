@@ -70,6 +70,17 @@ class User {
     return result.rows[0];
   }
 
+  /** Find all users. */
+
+  static async findAll() {
+    const result = await db.query(
+        `SELECT username, email
+          FROM users
+          ORDER BY username`);
+
+    return result.rows;
+  }
+
   /** Given a username, return data about user. */
 
   static async findOne(username) {
